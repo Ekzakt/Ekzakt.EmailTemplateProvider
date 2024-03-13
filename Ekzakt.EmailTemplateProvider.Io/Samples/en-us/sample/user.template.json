@@ -1,0 +1,29 @@
+{
+  "From": {
+    "Address": null,
+    "Name": null
+  },
+  "Tos": [
+    {
+      "Address": null,
+      "Name": null
+    }
+  ],
+  "Ccs": [
+    {
+      "Address": null,
+      "Name": null
+    }
+  ],
+  "Bccs": [
+    {
+      "Address": null,
+      "Name": null
+    }
+  ],
+  "Subject": "Subject Admin",
+  "Body": {
+    "Html": null,
+    "Text": null
+  }
+}
