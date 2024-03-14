@@ -2,6 +2,6 @@
 
 public class TemplateBody
 {
-    public string? Html { get; set; }
+    public string Html { get; set; } = string.Empty;
     public string? Text { get; set; }
 }

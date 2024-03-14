@@ -12,7 +12,7 @@ public class EmailTemplate
 
     public List<EmailAddress>? Bccs { get; set; } = new();
 
-    public string? Subject { get; set; }
+    public string Subject { get; set; } = string.Empty;
 
     public TemplateBody Body { get; set; } = new();
 }

@@ -211,7 +211,7 @@ public class IoEmailTemplateProvider(
             return true;
         }
 
-        _logger.LogWarning("The EmailTemplate '{TemplateName}' for culture '{CultureName}' could not be found. No EmailTemplates were returned.", request.TemplateName, request.CultureName);
+        _logger.LogWarning("The EmailTemplate '{TemplateName}' for culture '{CultureName}' could not be found. No EmailTemplate(s) is/are returned.", request.TemplateName, request.CultureName);
 
         return false;
     }

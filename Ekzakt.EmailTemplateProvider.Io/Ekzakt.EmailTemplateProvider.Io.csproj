@@ -17,12 +17,13 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Ekzakt.FileManager.Core" Version="0.0.25" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\Ekzakt.FileManager\Ekzakt.FileManager.Core.Models\Ekzakt.FileManager.Core.Models.csproj" />
+	  <ProjectReference Include="..\..\Ekzakt.FileManager\Ekzakt.FileManager.Core\Ekzakt.FileManager.Core.csproj" />
 	  <ProjectReference Include="..\Ekzakt.EmailTemplateProvider.Core\Ekzakt.EmailTemplateProvider.Core.csproj" />
 	</ItemGroup>
 
