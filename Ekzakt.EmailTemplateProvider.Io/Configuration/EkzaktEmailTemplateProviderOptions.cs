@@ -1,6 +1,6 @@
 ﻿namespace Ekzakt.EmailTemplateProvider.Io.Configuration;
 
-public class EmailTemplateProviderOptions
+public class EkzaktEmailTemplateProviderOptions
 {
     public const string OptionsName = "Ekzakt:EmailTemplateProvider";
 

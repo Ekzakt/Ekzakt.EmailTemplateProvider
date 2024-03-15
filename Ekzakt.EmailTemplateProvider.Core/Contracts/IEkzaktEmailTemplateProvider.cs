@@ -3,7 +3,7 @@ using Ekzakt.EmailTemplateProvider.Core.Responses;
 
 namespace Ekzakt.EmailTemplateProvider.Core.Contracts;
 
-public interface IEmailTemplateProvider
+public interface IEkzaktEmailTemplateProvider
 {
     Task<EmailTemplateResponse> GetTemplateAsync(EmailTemplateRequest request, CancellationToken cancellationToken = default);
 }

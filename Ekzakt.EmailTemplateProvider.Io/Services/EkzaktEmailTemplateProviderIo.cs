@@ -16,14 +16,14 @@ using System.Text.Json;
 
 namespace Ekzakt.EmailTemplateProvider.Io.Services;
 
-public class IoEmailTemplateProvider(
-    ILogger<IoEmailTemplateProvider> logger,
-    IOptions<EmailTemplateProviderOptions> options,
+public class EkzaktEmailTemplateProviderIo(
+    ILogger<EkzaktEmailTemplateProviderIo> logger,
+    IOptions<EkzaktEmailTemplateProviderOptions> options,
     IFileManager fileManager,
-    IMemoryCache memoryCache) : IEmailTemplateProvider
+    IMemoryCache memoryCache) : IEkzaktEmailTemplateProvider
 {
-    private readonly ILogger<IoEmailTemplateProvider> _logger = logger;
-    private readonly EmailTemplateProviderOptions _options = options.Value;
+    private readonly ILogger<EkzaktEmailTemplateProviderIo> _logger = logger;
+    private readonly EkzaktEmailTemplateProviderOptions _options = options.Value;
     private readonly IFileManager _fileManager = fileManager;
     private readonly IMemoryCache _memoryCache = memoryCache;
 
@@ -33,7 +33,7 @@ public class IoEmailTemplateProvider(
 
         if (_memoryCache.TryGetValue(request.CacheKey, out List<EmailTemplate>? templates))
         {
-            _logger.LogInformation("Returning EmailTemplates from cache with key '{CacheKey}'.", request.CacheKey);
+            _logger.LogInformation("Retreiving {EmailTemplateCount} EmailTemplate(s) from cache with key '{CacheKey}'.", templates?.Count ?? 0, request.CacheKey);
 
             return new EmailTemplateResponse { Templates = templates };
         }

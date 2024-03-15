@@ -7,25 +7,25 @@ namespace Ekzakt.EmailTemplateProvider.Io.Configuration;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddEmailTemplateProviderIo(this IServiceCollection services, Action<EmailTemplateProviderOptions> options)
+    public static IServiceCollection AddEkzaktEmailTemplateProviderIo(this IServiceCollection services, Action<EkzaktEmailTemplateProviderOptions> options)
     {
         services.Configure(options);
 
-        services.AddEmailTemplateProviderIo();
+        services.AddEkzaktEmailTemplateProviderIo();
 
         return services;
     }
 
 
-    public static IServiceCollection AddEmailTemplateProviderIo(this IServiceCollection services, string? configSectionPath = null)
+    public static IServiceCollection AddEkzaktEmailTemplateProviderIo(this IServiceCollection services, string? configSectionPath = null)
     {
-        configSectionPath ??= EmailTemplateProviderOptions.OptionsName;
+        configSectionPath ??= EkzaktEmailTemplateProviderOptions.OptionsName;
 
         services
-            .AddOptions<EmailTemplateProviderOptions>()
+            .AddOptions<EkzaktEmailTemplateProviderOptions>()
             .BindConfiguration(configSectionPath);
 
-        services.AddEmailTemplateProviderIo();
+        services.AddEkzaktEmailTemplateProviderIo();
 
         return services;
     }
@@ -35,9 +35,9 @@ public static class DependencyInjection
 
     #region Helpers
 
-    private static IServiceCollection AddEmailTemplateProviderIo(this IServiceCollection services)
+    private static IServiceCollection AddEkzaktEmailTemplateProviderIo(this IServiceCollection services)
     {
-        services.AddScoped<IEmailTemplateProvider, IoEmailTemplateProvider>();
+        services.AddScoped<IEkzaktEmailTemplateProvider, EkzaktEmailTemplateProviderIo>();
         services.AddMemoryCache();
 
         return services;
