@@ -1,4 +1,7 @@
-﻿namespace Ekzakt.EmailTemplateProvider.Core.Models;
+﻿using Ekzakt.EmailTemplateProvider.Core.Constants;
+using System.Text.Json.Serialization;
+
+namespace Ekzakt.EmailTemplateProvider.Core.Models;
 
 public class EmailTemplate
 {
@@ -15,4 +18,11 @@ public class EmailTemplate
     public string Subject { get; set; } = string.Empty;
 
     public TemplateBody Body { get; set; } = new();
+
+
+    [JsonIgnore]
+    public bool IsAdmin => RecipientType == RecipientTypes.USER;
+
+    [JsonIgnore]
+    public bool IsUser => RecipientType == RecipientTypes.USER;
 }

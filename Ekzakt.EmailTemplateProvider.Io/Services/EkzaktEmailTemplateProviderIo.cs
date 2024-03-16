@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using Ekzakt.EmailTemplateProvider.Core.Constants;
 using Ekzakt.EmailTemplateProvider.Core.Contracts;
 using Ekzakt.EmailTemplateProvider.Core.Models;
 using Ekzakt.EmailTemplateProvider.Core.Requests;

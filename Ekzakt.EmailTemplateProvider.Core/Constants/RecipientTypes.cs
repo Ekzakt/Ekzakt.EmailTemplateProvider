@@ -1,4 +1,4 @@
-﻿namespace Ekzakt.EmailTemplateProvider.Io.Constants;
+﻿namespace Ekzakt.EmailTemplateProvider.Core.Constants;
 
 public class RecipientTypes
 {
