@@ -211,7 +211,7 @@ public class EkzaktEmailTemplateProviderIo(
             return true;
         }
 
-        _logger.LogWarning("The EmailTemplate '{TemplateName}' for culture '{CultureName}' could not be found. No EmailTemplate(s) is/are returned.", request.TemplateName, request.CultureName);
+        _logger.LogWarning("The EmailTemplate '{TemplateName}' for culture '{CultureName}' could not be found. No EmailTemplate(s) is/are returned. Please be aware that Azure blobnames are case sensitive. ", request.TemplateName, request.CultureName);
 
         return false;
     }
