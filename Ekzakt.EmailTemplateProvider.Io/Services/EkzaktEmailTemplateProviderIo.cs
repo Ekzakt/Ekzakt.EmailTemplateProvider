@@ -90,10 +90,10 @@ public class EkzaktEmailTemplateProviderIo(
         var bodyPart = new TemplateBodyPart();
 
         var contentHtml = await GetContentFileAsync($"{fileBaseName}.{FileTypes.HTML}", paths);
-        bodyPart.Html = contentHtml?.Content;
+        bodyPart.Html = contentHtml?.Content ?? string.Empty;
 
         var contentText = await GetContentFileAsync($"{fileBaseName}.{FileTypes.TEXT}", paths);
-        bodyPart.Text = contentText?.Content;
+        bodyPart.Text = contentText?.Content ?? string.Empty;
 
         return bodyPart;
     }
@@ -104,10 +104,10 @@ public class EkzaktEmailTemplateProviderIo(
     internal void ComposeTemplateBodyParts(ref EmailTemplate emailTemplate, TemplateBodyPart? basePart, TemplateBodyPart? headerPart, TemplateBodyPart? bodyPart, TemplateBodyPart? footerPart)
     {
         var html = ComposeTemplateBodyPart(basePart?.Html, headerPart?.Html, bodyPart?.Html, footerPart?.Html);
-        emailTemplate.Body.Html = html;
+        emailTemplate.Body.Html = html ?? string.Empty;
 
         var text = ComposeTemplateBodyPart(basePart?.Text, headerPart?.Text, bodyPart?.Text, footerPart?.Text);
-        emailTemplate.Body.Text = text;
+        emailTemplate.Body.Text = text ?? string.Empty;
     }
 
 
