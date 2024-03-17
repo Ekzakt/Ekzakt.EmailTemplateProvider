@@ -10,7 +10,7 @@ public class EmailTemplate : Email
 
 
     [JsonIgnore]
-    public bool IsAdmin => RecipientType == RecipientTypes.USER;
+    public bool IsAdmin => RecipientType == RecipientTypes.ADMIN;
 
     [JsonIgnore]
     public bool IsUser => RecipientType == RecipientTypes.USER;
