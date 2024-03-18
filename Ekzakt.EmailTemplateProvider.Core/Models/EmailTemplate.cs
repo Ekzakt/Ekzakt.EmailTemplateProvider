@@ -6,6 +6,8 @@ namespace Ekzakt.EmailTemplateProvider.Core.Models;
 
 public class EmailTemplate : Email
 {
+    public string TemplateName { get; set; } = string.Empty;
+
     public string RecipientType { get; set; } = string.Empty;
 
 
