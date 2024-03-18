@@ -28,6 +28,13 @@ public class EkzaktEmailTemplateProviderIo(
     private readonly IFileManager _fileManager = fileManager;
     private readonly IMemoryCache _memoryCache = memoryCache;
 
+
+    /// <summary>
+    /// This method returns a list of EmailTemplates from an IO-based file system.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<EmailTemplateResponse> GetTemplateAsync(EmailTemplateRequest request, CancellationToken cancellationToken = default)
     {
         var output = new List<EmailTemplate>();
@@ -85,6 +92,13 @@ public class EkzaktEmailTemplateProviderIo(
 
     #region Helpers
 
+    /// <summary>
+    /// This method reads the body part content from their respective body 
+    /// types: HTML and text.
+    /// </summary>
+    /// <param name="fileBaseName"></param>
+    /// <param name="paths"></param>
+    /// <returns></returns>
     internal async Task<TemplateBodyPart> GetTemplateBodyPartAsync(string fileBaseName, params string[] paths)
     {
         var bodyPart = new TemplateBodyPart();
@@ -99,8 +113,15 @@ public class EkzaktEmailTemplateProviderIo(
     }
 
 
-
-
+    /// <summary>
+    /// This method composes the email template based on four different 
+    /// body parts: the base part, the header part, the body part, and the footer part.
+    /// </summary>
+    /// <param name="emailTemplate"></param>
+    /// <param name="basePart"></param>
+    /// <param name="headerPart"></param>
+    /// <param name="bodyPart"></param>
+    /// <param name="footerPart"></param>
     internal void ComposeTemplateBodyParts(ref EmailTemplate emailTemplate, TemplateBodyPart? basePart, TemplateBodyPart? headerPart, TemplateBodyPart? bodyPart, TemplateBodyPart? footerPart)
     {
         var html = ComposeTemplateBodyPart(basePart?.Html, headerPart?.Html, bodyPart?.Html, footerPart?.Html);
@@ -109,7 +130,6 @@ public class EkzaktEmailTemplateProviderIo(
         var text = ComposeTemplateBodyPart(basePart?.Text, headerPart?.Text, bodyPart?.Text, footerPart?.Text);
         emailTemplate.Body.Text = text ?? string.Empty;
     }
-
 
 
     /// <summary>
