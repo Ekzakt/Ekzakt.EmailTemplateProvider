@@ -22,7 +22,6 @@ public abstract class AbstractEmailTemplateProvider : IEkzaktEmailTemplateProvid
         return new EmailTemplatesResponse { Templates = templates };
     }
 
-
     protected abstract EmailTemplateSettings? TryGetFromCache(string cultureName, string templateName);
 
     protected abstract Task<EmailTemplateSettings?> ReadAsync(string cultureName, string templateName);
