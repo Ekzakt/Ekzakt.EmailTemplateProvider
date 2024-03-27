@@ -1,6 +1,6 @@
 ﻿namespace Ekzakt.EmailTemplateProvider.Core.Requests;
 
-public class EmailTemplateRequest
+public class EmailTemplatesRequest
 {
     public string? TenantId { get; set; }
 

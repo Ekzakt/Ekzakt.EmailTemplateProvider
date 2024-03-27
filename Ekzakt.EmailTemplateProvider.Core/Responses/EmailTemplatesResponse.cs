@@ -2,7 +2,7 @@
 
 namespace Ekzakt.EmailTemplateProvider.Core.Responses;
 
-public class EmailTemplateResponse
+public class EmailTemplatesResponse
 {
     public EmailTemplateSettings? Templates { get; set; }
 

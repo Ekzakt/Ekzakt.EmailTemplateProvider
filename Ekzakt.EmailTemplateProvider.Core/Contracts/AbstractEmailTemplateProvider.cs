@@ -6,20 +6,20 @@ namespace Ekzakt.EmailTemplateProvider.Core.Contracts;
 
 public abstract class AbstractEmailTemplateProvider : IEkzaktEmailTemplateProvider
 {
-    public async Task<EmailTemplateResponse> GetEmailTemplateAsync(EmailTemplateRequest request, CancellationToken cancellationToken = default)
+    public async Task<EmailTemplatesResponse> GetEmailTemplatesAsync(EmailTemplatesRequest request, CancellationToken cancellationToken = default)
     {
         var templates = TryGetFromCache(request.TemplateName, request.CultureName);
 
         if (templates is not null)
         {
-            return new EmailTemplateResponse { Templates = templates };
+            return new EmailTemplatesResponse { Templates = templates };
         }
 
         templates = await ReadAsync(request.CultureName, request.TemplateName);
 
         SetCache(templates);
 
-        return new EmailTemplateResponse { Templates = templates };
+        return new EmailTemplatesResponse { Templates = templates };
     }
 
 
