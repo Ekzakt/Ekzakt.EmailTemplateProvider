@@ -15,17 +15,10 @@ public class EkzaktEmailTemplateProviderIo(
     IEmailTemplateCache cache,
     FileReader fileReader) : AbstractEmailTemplateProvider
 {
-    private readonly ILogger<EkzaktEmailTemplateProviderIo> _logger = logger
-        ?? throw new ArgumentNullException(nameof(logger));
-
-    private readonly EkzaktEmailTemplateProviderOptions _options = options?.Value
-        ?? throw new ArgumentNullException(nameof(options));
-
-    private readonly IEmailTemplateCache _cache = cache
-        ?? throw new ArgumentNullException(nameof(cache));
-
-    private readonly FileReader _fileReader = fileReader 
-        ?? throw new ArgumentNullException(nameof(fileReader));
+    private readonly ILogger<EkzaktEmailTemplateProviderIo> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly EkzaktEmailTemplateProviderOptions _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
+    private readonly IEmailTemplateCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+    private readonly FileReader _fileReader = fileReader ?? throw new ArgumentNullException(nameof(fileReader));
 
 
     protected override EmailTemplateSettings? TryGetFromCache(string cultureName, string templateName)
