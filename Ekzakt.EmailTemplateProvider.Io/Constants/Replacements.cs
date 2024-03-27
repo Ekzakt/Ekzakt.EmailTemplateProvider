@@ -2,9 +2,9 @@
 
 internal class Replacements
 {
-    public const string HEADER = "{{Header}}";
+    public const string HEADER = "Header";
 
-    public const string BODY = "{{Body}}";
+    public const string BODY = "Body";
 
-    public const string FOOTER = "{{Footer}}";
+    public const string FOOTER = "Footer";
 }

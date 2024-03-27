@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
 using Ekzakt.EmailTemplateProvider.Io.Services;
+using Ekzakt.EmailTemplateProvider.Core.Caching;
 
 namespace Ekzakt.EmailTemplateProvider.Io.Configuration;
 
@@ -27,18 +28,19 @@ public static class DependencyInjection
 
         services.AddEkzaktEmailTemplateProviderIo();
 
+        services.AddScoped<FileReader>();
+
         return services;
     }
-
-
 
 
     #region Helpers
 
     private static IServiceCollection AddEkzaktEmailTemplateProviderIo(this IServiceCollection services)
     {
-        services.AddScoped<IEkzaktEmailTemplateProvider, EkzaktEmailTemplateProviderIo>();
         services.AddMemoryCache();
+        services.AddSingleton<IEmailTemplateCache, EmailTemplateCache>();
+        services.AddScoped<IEkzaktEmailTemplateProvider, EkzaktEmailTemplateProviderIo>();
 
         return services;
     }

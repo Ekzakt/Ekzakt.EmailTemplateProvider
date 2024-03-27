@@ -17,10 +17,11 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Ekzakt.Utilities" Version="0.2.21" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-		<PackageReference Include="Ekzakt.FileManager.Core" Version="0.0.25" />
-		<PackageReference Include="Ekzakt.FileManager.Core.Models" Version="0.0.25" />
+		<PackageReference Include="Ekzakt.FileManager.Core" Version="0.0.35" />
+		<PackageReference Include="Ekzakt.FileManager.Core.Models" Version="0.0.35" />
 	</ItemGroup>
 
 	<ItemGroup>

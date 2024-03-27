@@ -1,0 +1,31 @@
+{
+  "CultureName" :  "en-us",
+  "TemplateName": "sample",
+  "EmailSettings": [
+    {
+      "RecipientType": "admin",
+      "Email": {
+        "Subject": "Sample - Admin",
+        "Tos": [
+          {
+            "Address": "mail@ericjansen.com",
+            "Name": "Eric Jansen"
+          }
+        ]
+      }
+    },
+    {
+      "RecipientType": "user",
+      "Email": {
+        "Subject": "Sample - User",
+        "Tos": [
+          {
+            "Address": "mail@ericjansen.com",
+            "Name": "Eric Jansen"
+          }
+        ]
+      }
+    }
+  ]
+}
+

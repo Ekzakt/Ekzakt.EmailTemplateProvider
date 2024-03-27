@@ -8,6 +8,6 @@ public class EmailTemplateRequest
 
     public string TemplateName { get; set; } = string.Empty;
 
-    public string CacheKey => $"{TenantId}{(TenantId != null ? "." : "")}{CultureName}.{TemplateName}".ToLower();
+    public string CacheKey => $"{TenantId}{(TenantId != null ? "." : string.Empty)}{CultureName}.{TemplateName}".ToLower();
 
 }

@@ -4,8 +4,6 @@ public class EkzaktEmailTemplateProviderOptions
 {
     public const string OptionsName = "Ekzakt:EmailTemplateProvider";
 
-    public string[] RecipientTypes { get; init; } = [];
-
     public string BaseLocation { get; init; } = string.Empty;
 
     public double CacheSlidingExpiration { get; init; } = 3600;

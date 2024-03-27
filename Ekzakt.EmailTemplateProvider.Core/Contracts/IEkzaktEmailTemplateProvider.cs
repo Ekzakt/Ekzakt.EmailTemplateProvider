@@ -5,5 +5,5 @@ namespace Ekzakt.EmailTemplateProvider.Core.Contracts;
 
 public interface IEkzaktEmailTemplateProvider
 {
-    Task<EmailTemplateResponse> GetTemplateAsync(EmailTemplateRequest request, CancellationToken cancellationToken = default);
+    Task<EmailTemplateResponse> GetEmailTemplateAsync(EmailTemplateRequest request, CancellationToken cancellationToken = default);
 }
