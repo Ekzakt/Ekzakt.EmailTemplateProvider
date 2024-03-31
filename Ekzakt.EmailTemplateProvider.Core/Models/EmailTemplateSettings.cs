@@ -1,7 +1,11 @@
-﻿namespace Ekzakt.EmailTemplateProvider.Core.Models;
+﻿using Ekzakt.EmailTemplateProvider.Core.Requests;
+
+namespace Ekzakt.EmailTemplateProvider.Core.Models;
 
 public class EmailTemplateSettings
 {
+    public string? TenantId { get; set; }
+
     public string CultureName { get; set; } = string.Empty;
 
     public string TemplateName { get; set; } = string.Empty;

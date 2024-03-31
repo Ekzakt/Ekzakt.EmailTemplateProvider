@@ -1,4 +1,7 @@
-﻿using Ekzakt.EmailTemplateProvider.Io.Configuration;
+﻿using Ekzakt.EmailTemplateProvider.Core.Models;
+using Ekzakt.EmailTemplateProvider.Core.Requests;
+using Ekzakt.EmailTemplateProvider.Io.Configuration;
+using Ekzakt.EmailTemplateProvider.Io.Constants;
 using Ekzakt.FileManager.Core.Contracts;
 using Ekzakt.FileManager.Core.Models.Requests;
 using Microsoft.Extensions.Options;
@@ -6,13 +9,13 @@ using System.Text.Json;
 
 namespace Ekzakt.EmailTemplateProvider.Io.Services;
 
-public class FileReader 
+internal class TemplateFileReader : ITemplateFileReader
 {
     private readonly IFileManager _fileManager;
     private readonly EkzaktEmailTemplateProviderOptions _options;
 
 
-    public FileReader(
+    public TemplateFileReader(
         IFileManager fileManager,
         IOptions<EkzaktEmailTemplateProviderOptions> options)
     {
@@ -21,7 +24,15 @@ public class FileReader
     }
 
 
-    public async Task<string?> ReadAsync(string filename, params string[] paths)
+    public async Task<EmailTemplateSettings?> ReadSettingsFileAsync(EmailTemplateRequest request)
+    {
+        var fileName = $"{FileRootNames.SETTINGS}.{FileTypes.JSON}";
+
+        return await ReadAsync<EmailTemplateSettings>(fileName, request.TenantId ?? string.Empty, request.CultureName, request.TemplateName);
+    }
+
+
+    public async Task<string?> ReadFileAsync(string filename, params string[] paths)
     {
         var request = new ReadFileAsStringRequest
         {
@@ -44,7 +55,7 @@ public class FileReader
     public async Task<T?> ReadAsync<T>(string fileName, params string[] paths)
         where T : class?
     {
-        var content = await ReadAsync(fileName, paths);
+        var content = await ReadFileAsync(fileName, paths);
 
         if (content is null)
         {

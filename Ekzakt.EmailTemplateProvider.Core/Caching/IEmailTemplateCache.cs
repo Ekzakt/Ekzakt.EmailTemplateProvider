@@ -1,10 +1,11 @@
 ﻿using Ekzakt.EmailTemplateProvider.Core.Models;
+using Ekzakt.EmailTemplateProvider.Core.Requests;
 
 namespace Ekzakt.EmailTemplateProvider.Core.Caching;
 
 public interface IEmailTemplateCache
 {
-    EmailTemplateSettings? GetTemplate(string cultureName, string templateName, string falbackCultureName);
+    Task<(bool, EmailTemplateSettings?)> TryGetTemplate(EmailTemplateRequest request, Func<EmailTemplateRequest, Task<EmailTemplateSettings?>> cacheKeyNotFound);
 
-    void SetTemplate(EmailTemplateSettings emailTemplateSettings);
+    void SetTemplate(string cacheKeyName, EmailTemplateSettings emailTemplateSettings);
 }
