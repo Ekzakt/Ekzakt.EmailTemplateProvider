@@ -1,6 +1,4 @@
-﻿using Ekzakt.EmailTemplateProvider.Core.Requests;
-
-namespace Ekzakt.EmailTemplateProvider.Core.Models;
+﻿namespace Ekzakt.EmailTemplateProvider.Core.Models;
 
 public class EmailTemplateSettings
 {
