@@ -8,5 +8,7 @@ public class EkzaktEmailTemplateProviderOptions
 
     public double CacheSlidingExpiration { get; init; } = 3600;
 
-    public string FallbackCultureName { get; init; } = "en-US";
+    public string FallbackCultureName { get; init; } = "en-us";
+
+    public bool ThrowOnException { get; init; } = false;
 }

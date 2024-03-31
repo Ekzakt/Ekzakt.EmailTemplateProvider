@@ -31,7 +31,7 @@ public class EkzaktEmailTemplateProviderIo : IEkzaktEmailTemplateProvider
     }
 
 
-    public async Task<EmailTemplateResponse> GetEmailTemplateAsync(EmailTemplateRequest request, CancellationToken cancellationToken = default)
+    public async Task<EmailTemplateResponse?> GetEmailTemplateAsync(EmailTemplateRequest request, CancellationToken cancellationToken = default)
     {
         var (isSuccess, template) = await _cache.TryGetTemplate(request, OnCacheKeyNotFound);
 
@@ -47,7 +47,7 @@ public class EkzaktEmailTemplateProviderIo : IEkzaktEmailTemplateProvider
                 var fallbackRequest = new EmailTemplateRequest
                 {
                     TenantId = request.TenantId,
-                    CultureName = _options.FallbackCultureName,
+                    CultureName = _options.FallbackCultureName.ToLower(),
                     TemplateName = request.TemplateName
                 };
 
@@ -55,12 +55,23 @@ public class EkzaktEmailTemplateProviderIo : IEkzaktEmailTemplateProvider
             }
         }
 
-        throw new InvalidOperationException(
-            $"A template with request {request} cound not be, nor " +
-            $"could a template with fallback culturename '{_options.FallbackCultureName}' be " +
-            $"found. This is likely the cause of the requested template name " + 
-            $"'{request.TemplateName}' begin invalid.");
 
+        if (_options.ThrowOnException)
+        {
+            throw new InvalidOperationException(
+                $"A template with request {request} cound not be found, nor " +
+                $"could a template with fallback culturename '{_options.FallbackCultureName}' be " +
+                $"found. This is likely caused by the requested template name " +
+                $"'{request.TemplateName}' being invalid.");
+        }
+
+        _logger.LogWarning(
+            "A template with request '{EmailTemplateRequest}' cound not be found, nor " +
+            "could a template with fallback culturename '{FallbackCultureName}' be " +
+            "found. This is likely caused by the request template name " +
+            "'{TemplateName}' being invalid.", request.ToString(), _options.FallbackCultureName.ToLower(), request.TemplateName);
+
+        return null;
     }
 
 
