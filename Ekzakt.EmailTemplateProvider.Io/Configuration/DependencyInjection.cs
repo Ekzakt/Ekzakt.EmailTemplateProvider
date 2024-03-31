@@ -28,7 +28,7 @@ public static class DependencyInjection
 
         services.AddEkzaktEmailTemplateProviderIo();
 
-        services.AddScoped<FileReader>();
+        services.AddScoped<ITemplateFileReader, TemplateFileReader>();
 
         return services;
     }

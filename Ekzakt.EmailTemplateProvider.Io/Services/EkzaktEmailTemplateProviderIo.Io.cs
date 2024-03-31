@@ -1,6 +1,8 @@
 ﻿using Ekzakt.EmailTemplateProvider.Core.Caching;
 using Ekzakt.EmailTemplateProvider.Core.Contracts;
 using Ekzakt.EmailTemplateProvider.Core.Models;
+using Ekzakt.EmailTemplateProvider.Core.Requests;
+using Ekzakt.EmailTemplateProvider.Core.Responses;
 using Ekzakt.EmailTemplateProvider.Io.Configuration;
 using Ekzakt.EmailTemplateProvider.Io.Constants;
 using Ekzakt.Utilities;
@@ -9,40 +11,77 @@ using Microsoft.Extensions.Options;
 
 namespace Ekzakt.EmailTemplateProvider.Io.Services;
 
-public class EkzaktEmailTemplateProviderIo(
-    ILogger<EkzaktEmailTemplateProviderIo> logger,
-    IOptions<EkzaktEmailTemplateProviderOptions> options,
-    IEmailTemplateCache cache,
-    FileReader fileReader) : AbstractEmailTemplateProvider
+public class EkzaktEmailTemplateProviderIo : IEkzaktEmailTemplateProvider
 {
-    private readonly ILogger<EkzaktEmailTemplateProviderIo> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    private readonly EkzaktEmailTemplateProviderOptions _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
-    private readonly IEmailTemplateCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
-    private readonly FileReader _fileReader = fileReader ?? throw new ArgumentNullException(nameof(fileReader));
+    private readonly ILogger<EkzaktEmailTemplateProviderIo> _logger;
+    private readonly EkzaktEmailTemplateProviderOptions _options;
+    private readonly IEmailTemplateCache _cache;
+    private readonly ITemplateFileReader _fileReader;
 
-
-    protected override EmailTemplateSettings? TryGetFromCache(string cultureName, string templateName)
+    public EkzaktEmailTemplateProviderIo(
+        ILogger<EkzaktEmailTemplateProviderIo> logger,
+        IOptions<EkzaktEmailTemplateProviderOptions> options,
+        IEmailTemplateCache cache,
+        ITemplateFileReader fileReader)
     {
-        return _cache.GetTemplate(cultureName, templateName, _options.FallbackCultureName);
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
+        _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+        _fileReader = fileReader ?? throw new ArgumentNullException(nameof(fileReader));
     }
 
 
-    protected override async Task<EmailTemplateSettings?> ReadAsync(string cultureName, string templateName)
+    public async Task<EmailTemplateResponse> GetEmailTemplateAsync(EmailTemplateRequest request, CancellationToken cancellationToken = default)
     {
-        var settings = await ReadSettingsFileAsync(cultureName, templateName);
+        var (isSuccess, template) = await _cache.TryGetTemplate(request, OnCacheKeyNotFound);
 
-        if (settings is null || !IsSettingsValid(settings, cultureName, templateName))
+        if (isSuccess)
+        {
+            if (template is not null && template.IsValid)
+            {
+                return new EmailTemplateResponse(template);
+            }
+
+            if (!string.IsNullOrEmpty(_options.FallbackCultureName) && request.CultureName != _options.FallbackCultureName)
+            {
+                var fallbackRequest = new EmailTemplateRequest
+                {
+                    TenantId = request.TenantId,
+                    CultureName = _options.FallbackCultureName,
+                    TemplateName = request.TemplateName
+                };
+
+                return await GetEmailTemplateAsync(fallbackRequest, cancellationToken);
+            }
+        }
+
+        throw new InvalidOperationException(
+            $"A template with request {request} cound not be, nor " +
+            $"could a template with fallback culturename '{_options.FallbackCultureName}' be " +
+            $"found. This is likely the cause of the requested template name " + 
+            $"'{request.TemplateName}' begin invalid.");
+
+    }
+
+
+    public async Task<EmailTemplateSettings?> ReadTemplateFilesAsync(EmailTemplateRequest request)
+    {
+        _logger.LogInformation("Reading templates {CacheKeyName} from file system.", request.CacheKeyName);
+
+        var settings = await _fileReader.ReadSettingsFileAsync(request);
+
+        if (settings is null || !IsSettingsValid(settings, request.TenantId, request.CultureName, request.TemplateName))
         {
             return null;
         }
 
-        var (baseHtml, baseText) = await ReadFilesAsync(FileRootNames.BASE);
-        var (headerHtml, headerText) = await ReadFilesAsync(FileRootNames.HEADER, cultureName);
-        var (footerHtml, footerText) = await ReadFilesAsync(FileRootNames.FOOTER, cultureName);
+        var (baseHtml, baseText) = await ReadBaseFilesAsync(FileRootNames.BASE);
+        var (headerHtml, headerText) = await ReadBaseFilesAsync(FileRootNames.HEADER, request.TenantId ?? string.Empty, request.CultureName);
+        var (footerHtml, footerText) = await ReadBaseFilesAsync(FileRootNames.FOOTER, request.TenantId ?? string.Empty, request.CultureName);
 
         foreach (var setting in settings.EmailSettings ?? [])
         {
-            var (bodyHtml, bodyText) = await ReadFilesAsync(FileRootNames.BODY(setting.RecipientType), cultureName, templateName);
+            var (bodyHtml, bodyText) = await ReadBaseFilesAsync(FileRootNames.BODY(setting.RecipientType), request.TenantId ?? string.Empty, request.CultureName, request.TemplateName);
 
             if (setting.Email is not null)
             {
@@ -58,43 +97,25 @@ public class EkzaktEmailTemplateProviderIo(
     }
 
 
-    protected override void SetCache(EmailTemplateSettings? template)
-    {
-        if (template is null)
-        {
-            return;
-        }
-
-        _cache.SetTemplate(template);
-    }
-
-
     #region Helpers
 
-    private bool IsSettingsValid(EmailTemplateSettings settings, string cultureName, string templateName)
+    private bool IsSettingsValid(EmailTemplateSettings settings, string? tenantId, string cultureName, string templateName)
     {
-        return settings.IsValid && settings.CultureName == cultureName && settings.TemplateName == templateName;
+        return settings.IsValid && 
+            settings.TenantId == tenantId &&
+            settings.CultureName == cultureName && 
+            settings.TemplateName == templateName;
     }
 
-    private async Task<(string?, string?)> ReadFilesAsync(string fileRootName, params string[] paths)
+
+    private async Task<(string?, string?)> ReadBaseFilesAsync(string fileRootName, params string[] paths)
     {
-        var html = await ReadFileAsync($"{fileRootName}.{FileTypes.HTML}", paths);
-        var text = await ReadFileAsync($"{fileRootName}.{FileTypes.TEXT}", paths);
+        var html = await _fileReader.ReadFileAsync($"{fileRootName}.{FileTypes.HTML}", paths);
+        var text = await _fileReader.ReadFileAsync($"{fileRootName}.{FileTypes.TEXT}", paths);
 
         return (html, text);
     }
 
-    private async Task<string?> ReadFileAsync(string fileName, params string[] parameters)
-    {
-        return await _fileReader.ReadAsync(fileName, parameters);
-    }
-
-    private async Task<EmailTemplateSettings?> ReadSettingsFileAsync(string cultureName, string templateName)
-    {
-        var fileName = $"{FileRootNames.SETTINGS}.{FileTypes.JSON}";
-
-        return await _fileReader.ReadAsync<EmailTemplateSettings>(fileName, cultureName, templateName);
-    }
 
     private string? ComposeEmail(string? baseContent, string? headerContent, string? bodyContent, string? footerContent)
     {
@@ -114,6 +135,25 @@ public class EkzaktEmailTemplateProviderIo(
 
         return output;
     }
+
+
+    private async Task<EmailTemplateSettings?> OnCacheKeyNotFound(EmailTemplateRequest request)
+    {
+        _logger.LogDebug("Reading template from source with request value {EmailTemplateRequest}.", request.ToString());
+
+        var templates = await ReadTemplateFilesAsync(request);
+
+        return templates;
+    }
+
+
+    public EmailTemplateCacheResponse GetCacheValues()
+    {
+        throw new NotImplementedException();
+    }
+
+
+
 
     #endregion Helpers
 }
