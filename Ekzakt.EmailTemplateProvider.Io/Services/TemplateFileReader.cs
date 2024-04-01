@@ -11,12 +11,12 @@ namespace Ekzakt.EmailTemplateProvider.Io.Services;
 
 internal class TemplateFileReader : ITemplateFileReader
 {
-    private readonly IFileManager _fileManager;
+    private readonly IEkzaktFileManager _fileManager;
     private readonly EkzaktEmailTemplateProviderOptions _options;
 
 
     public TemplateFileReader(
-        IFileManager fileManager,
+        IEkzaktFileManager fileManager,
         IOptions<EkzaktEmailTemplateProviderOptions> options)
     {
         _fileManager = fileManager ?? throw new ArgumentNullException(nameof(fileManager));
