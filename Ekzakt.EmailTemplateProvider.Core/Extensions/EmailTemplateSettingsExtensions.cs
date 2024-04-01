@@ -1,12 +1,11 @@
 ﻿using Ekzakt.EmailTemplateProvider.Core.Models;
 using Ekzakt.Utilities;
-using System.Runtime.CompilerServices;
 
 namespace Ekzakt.EmailTemplateProvider.Core.Extensions;
 
 public static class EmailTemplateSettingsExtensions
 {
-    public static EmailTemplateSettings ApplyRecplaments(this EmailTemplateSettings templates, StringReplacer replacer)
+    public static EmailTemplateSettings ApplyReplacements(this EmailTemplateSettings templates, StringReplacer replacer)
     {
         if (!templates.IsValid)
         {
