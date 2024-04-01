@@ -1,4 +1,5 @@
-﻿using Ekzakt.EmailTemplateProvider.Core.Caching;
+﻿using Ekzakt.EmailTemplateProvider.Core;
+using Ekzakt.EmailTemplateProvider.Core.Caching;
 using Ekzakt.EmailTemplateProvider.Core.Contracts;
 using Ekzakt.EmailTemplateProvider.Core.Models;
 using Ekzakt.EmailTemplateProvider.Core.Requests;
