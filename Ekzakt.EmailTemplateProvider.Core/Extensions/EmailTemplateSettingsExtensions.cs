@@ -16,9 +16,12 @@ public static class EmailTemplateSettingsExtensions
         {
             var email = emailSetting.Email;
 
-            replacer.Replace(email!.Subject ?? string.Empty);
-            replacer.Replace(email!.Body.Html);
-            replacer.Replace(email!.Body.Text ?? string.Empty);
+            if (email != null)
+            { 
+                email.Subject = replacer.Replace(email!.Subject ?? string.Empty);
+                email.Body.Html = replacer.Replace(email!.Body.Html);
+                email.Body.Text = replacer.Replace(email!.Body.Text ?? string.Empty);
+            }
         }
 
         return templates;
