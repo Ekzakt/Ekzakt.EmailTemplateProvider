@@ -111,12 +111,12 @@ public class EkzaktEmailTemplateProviderIo : IEkzaktEmailTemplateProvider
 
     #region Helpers
 
-    private bool IsSettingsValid(EmailTemplateInfo settings, string? tenantId, string cultureName, string templateName)
+    private bool IsSettingsValid(EmailTemplateInfo templateInfo, string? tenantId, string cultureName, string templateName)
     {
-        return settings.IsValid && 
-            settings.TenantId == tenantId &&
-            settings.CultureName == cultureName && 
-            settings.TemplateName == templateName;
+        return templateInfo.IsValid && 
+            templateInfo.TenantId == tenantId &&
+            templateInfo.CultureName == cultureName && 
+            templateInfo.TemplateName == templateName;
     }
 
 
