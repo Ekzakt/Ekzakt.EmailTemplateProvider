@@ -2,7 +2,7 @@
 
 namespace Ekzakt.EmailTemplateProvider.Core.Models;
 
-public class EmailSettings
+public class EmailInfo
 {
     public string RecipientType { get; set; } = string.Empty;
 

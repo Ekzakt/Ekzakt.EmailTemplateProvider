@@ -3,16 +3,16 @@ using Ekzakt.Utilities;
 
 namespace Ekzakt.EmailTemplateProvider.Core.Extensions;
 
-public static class EmailTemplateSettingsExtensions
+public static class EmailTemplateInfoExtensions
 {
-    public static EmailTemplateSettings ApplyReplacements(this EmailTemplateSettings templates, StringReplacer replacer)
+    public static EmailTemplateInfo ApplyReplacements(this EmailTemplateInfo templates, StringReplacer replacer)
     {
         if (!templates.IsValid)
         {
             return templates;
         }
 
-        foreach (var emailSetting in templates.EmailSettings!)
+        foreach (var emailSetting in templates.EmailInfos!)
         {
             var email = emailSetting.Email;
 

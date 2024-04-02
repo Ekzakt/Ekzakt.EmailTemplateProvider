@@ -12,9 +12,9 @@ public sealed class EmailTemplateCache(
     private readonly IMemoryCache _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
     private readonly ILogger<EmailTemplateCache> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-    public async Task<(bool, EmailTemplateSettings?)> TryGetTemplate(EmailTemplateRequest request, Func<EmailTemplateRequest, Task<EmailTemplateSettings?>> onCacheKeyNotFound)
+    public async Task<(bool, EmailTemplateInfo?)> TryGetTemplate(EmailTemplateRequest request, Func<EmailTemplateRequest, Task<EmailTemplateInfo?>> onCacheKeyNotFound)
     {
-        if (_memoryCache.TryGetValue(request.CacheKeyName, out EmailTemplateSettings? template))
+        if (_memoryCache.TryGetValue(request.CacheKeyName, out EmailTemplateInfo? template))
         {
             _logger.LogDebug("A value of {CacheKeyName} was found in cache and is being returned.", request.CacheKeyName);
             return (true, template);
@@ -29,10 +29,10 @@ public sealed class EmailTemplateCache(
     }
 
 
-    public void SetTemplate(string cacheKeyName, EmailTemplateSettings? emailTemplateSettings)
+    public void SetTemplate(string cacheKeyName, EmailTemplateInfo? emailTemplateInfo)
     {
         _logger.LogDebug("Setting cache value '{CacheKey}'.", cacheKeyName);
 
-        _memoryCache.Set(cacheKeyName, emailTemplateSettings);
+        _memoryCache.Set(cacheKeyName, emailTemplateInfo);
     }
 }

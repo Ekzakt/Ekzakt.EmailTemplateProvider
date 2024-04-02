@@ -9,5 +9,5 @@ public interface ITemplateFileReader
 
     Task<T?> ReadAsync<T>(string fileName, params string[] paths) where T : class?;
 
-    Task<EmailTemplateSettings?> ReadSettingsFileAsync(EmailTemplateRequest request);
+    Task<EmailTemplateInfo?> ReadSettingsFileAsync(EmailTemplateRequest request);
 }
