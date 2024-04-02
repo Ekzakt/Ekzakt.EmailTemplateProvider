@@ -158,14 +158,5 @@ public class EkzaktEmailTemplateProviderIo : IEkzaktEmailTemplateProvider
         return templates;
     }
 
-
-    public EmailTemplateCacheResponse GetCacheValues()
-    {
-        throw new NotImplementedException();
-    }
-
-
-
-
     #endregion Helpers
 }
