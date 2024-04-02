@@ -1,7 +1,7 @@
 {
   "CultureName" :  "en-us",
   "TemplateName": "sample",
-  "EmailSettings": [
+  "EmailInfos": [
     {
       "RecipientType": "admin",
       "Email": {

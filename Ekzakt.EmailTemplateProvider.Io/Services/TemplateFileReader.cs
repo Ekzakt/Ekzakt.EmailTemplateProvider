@@ -24,11 +24,11 @@ internal class TemplateFileReader : ITemplateFileReader
     }
 
 
-    public async Task<EmailTemplateSettings?> ReadSettingsFileAsync(EmailTemplateRequest request)
+    public async Task<EmailTemplateInfo?> ReadSettingsFileAsync(EmailTemplateRequest request)
     {
         var fileName = $"{FileRootNames.SETTINGS}.{FileTypes.JSON}";
 
-        return await ReadAsync<EmailTemplateSettings>(fileName, request.TenantId ?? string.Empty, request.CultureName, request.TemplateName);
+        return await ReadAsync<EmailTemplateInfo>(fileName, request.TenantId ?? string.Empty, request.CultureName, request.TemplateName);
     }
 
 

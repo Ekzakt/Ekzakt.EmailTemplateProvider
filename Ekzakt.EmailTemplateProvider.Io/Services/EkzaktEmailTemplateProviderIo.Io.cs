@@ -76,7 +76,7 @@ public class EkzaktEmailTemplateProviderIo : IEkzaktEmailTemplateProvider
     }
 
 
-    public async Task<EmailTemplateSettings?> ReadTemplateFilesAsync(EmailTemplateRequest request)
+    public async Task<EmailTemplateInfo?> ReadTemplateFilesAsync(EmailTemplateRequest request)
     {
         _logger.LogInformation("Reading templates {CacheKeyName} from file system.", request.CacheKeyName);
 
@@ -91,7 +91,7 @@ public class EkzaktEmailTemplateProviderIo : IEkzaktEmailTemplateProvider
         var (headerHtml, headerText) = await ReadBaseFilesAsync(FileRootNames.HEADER, request.TenantId ?? string.Empty, request.CultureName);
         var (footerHtml, footerText) = await ReadBaseFilesAsync(FileRootNames.FOOTER, request.TenantId ?? string.Empty, request.CultureName);
 
-        foreach (var setting in settings.EmailSettings ?? [])
+        foreach (var setting in settings.EmailInfos ?? [])
         {
             var (bodyHtml, bodyText) = await ReadBaseFilesAsync(FileRootNames.BODY(setting.RecipientType), request.TenantId ?? string.Empty, request.CultureName, request.TemplateName);
 
@@ -111,12 +111,12 @@ public class EkzaktEmailTemplateProviderIo : IEkzaktEmailTemplateProvider
 
     #region Helpers
 
-    private bool IsSettingsValid(EmailTemplateSettings settings, string? tenantId, string cultureName, string templateName)
+    private bool IsSettingsValid(EmailTemplateInfo templateInfo, string? tenantId, string cultureName, string templateName)
     {
-        return settings.IsValid && 
-            settings.TenantId == tenantId &&
-            settings.CultureName == cultureName && 
-            settings.TemplateName == templateName;
+        return templateInfo.IsValid && 
+            templateInfo.TenantId == tenantId &&
+            templateInfo.CultureName == cultureName && 
+            templateInfo.TemplateName == templateName;
     }
 
 
@@ -149,7 +149,7 @@ public class EkzaktEmailTemplateProviderIo : IEkzaktEmailTemplateProvider
     }
 
 
-    private async Task<EmailTemplateSettings?> OnCacheKeyNotFound(EmailTemplateRequest request)
+    private async Task<EmailTemplateInfo?> OnCacheKeyNotFound(EmailTemplateRequest request)
     {
         _logger.LogDebug("Reading template from source with request value {EmailTemplateRequest}.", request.ToString());
 

@@ -5,7 +5,7 @@ namespace Ekzakt.EmailTemplateProvider.Core.Caching;
 
 public interface IEmailTemplateCache
 {
-    Task<(bool, EmailTemplateSettings?)> TryGetTemplate(EmailTemplateRequest request, Func<EmailTemplateRequest, Task<EmailTemplateSettings?>> cacheKeyNotFound);
+    Task<(bool, EmailTemplateInfo?)> TryGetTemplate(EmailTemplateRequest request, Func<EmailTemplateRequest, Task<EmailTemplateInfo?>> cacheKeyNotFound);
 
-    void SetTemplate(string cacheKeyName, EmailTemplateSettings emailTemplateSettings);
+    void SetTemplate(string cacheKeyName, EmailTemplateInfo emailTemplateInfo);
 }

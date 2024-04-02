@@ -3,18 +3,18 @@ using Ekzakt.Utilities;
 
 namespace Ekzakt.EmailTemplateProvider.Core.Extensions;
 
-public static class EmailTemplateSettingsExtensions
+public static class EmailTemplateInfoExtensions
 {
-    public static EmailTemplateSettings ApplyReplacements(this EmailTemplateSettings templates, StringReplacer replacer)
+    public static EmailTemplateInfo ApplyReplacements(this EmailTemplateInfo templateInfo, StringReplacer replacer)
     {
-        if (!templates.IsValid)
+        if (!templateInfo.IsValid)
         {
-            return templates;
+            return templateInfo;
         }
 
-        foreach (var emailSetting in templates.EmailSettings!)
+        foreach (var emailInfo in templateInfo.EmailInfos!)
         {
-            var email = emailSetting.Email;
+            var email = emailInfo.Email;
 
             if (email != null)
             { 
@@ -22,8 +22,10 @@ public static class EmailTemplateSettingsExtensions
                 email.Body.Html = replacer.Replace(email!.Body.Html);
                 email.Body.Text = replacer.Replace(email!.Body.Text ?? string.Empty);
             }
+
+            emailInfo.Email = email;
         }
 
-        return templates;
+        return templateInfo;
     }
 }

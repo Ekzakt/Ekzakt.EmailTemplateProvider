@@ -1,6 +1,6 @@
 ﻿namespace Ekzakt.EmailTemplateProvider.Core.Models;
 
-public class EmailTemplateSettings
+public class EmailTemplateInfo
 {
     public string? TenantId { get; set; }
 
@@ -8,10 +8,10 @@ public class EmailTemplateSettings
 
     public string TemplateName { get; set; } = string.Empty;
 
-    public List<EmailSettings>? EmailSettings { get; set; }
+    public List<EmailInfo>? EmailInfos { get; set; }
 
     public bool IsValid =>
         !string.IsNullOrWhiteSpace(CultureName) ||
         !string.IsNullOrWhiteSpace(TemplateName) ||
-        EmailSettings?.Count > 0;
+        EmailInfos?.Count > 0;
 }
