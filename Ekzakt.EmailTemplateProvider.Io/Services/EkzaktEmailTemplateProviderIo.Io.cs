@@ -1,5 +1,4 @@
-﻿using Ekzakt.EmailTemplateProvider.Core;
-using Ekzakt.EmailTemplateProvider.Core.Caching;
+﻿using Ekzakt.EmailTemplateProvider.Core.Caching;
 using Ekzakt.EmailTemplateProvider.Core.Contracts;
 using Ekzakt.EmailTemplateProvider.Core.Models;
 using Ekzakt.EmailTemplateProvider.Core.Requests;
@@ -7,6 +6,7 @@ using Ekzakt.EmailTemplateProvider.Core.Responses;
 using Ekzakt.EmailTemplateProvider.Io.Configuration;
 using Ekzakt.EmailTemplateProvider.Io.Constants;
 using Ekzakt.Utilities;
+using Ekzakt.Utilities.Helpers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -34,13 +34,19 @@ public class EkzaktEmailTemplateProviderIo : IEkzaktEmailTemplateProvider
 
     public async Task<EmailTemplateResponse?> GetEmailTemplateAsync(EmailTemplateRequest request, CancellationToken cancellationToken = default)
     {
-        var (isSuccess, template) = await _cache.TryGetTemplate(request, OnCacheKeyNotFound);
+        var (isSuccess, templateInfo) = await _cache.TryGetTemplate(request, OnCacheKeyNotFound);
 
         if (isSuccess)
         {
-            if (template is not null && template.IsValid)
+            if (templateInfo is not null && templateInfo.IsValid)
             {
-                return new EmailTemplateResponse(template);
+                // We need to create a deep copy of the template because
+                // the EmailTemplateInfo returned from the cache
+                // seems to be a reference type.
+
+                EmailTemplateInfo clonedTemplateInfo = templateInfo.DeepCopy();
+
+                return new EmailTemplateResponse(templateInfo);
             }
 
             if (!string.IsNullOrEmpty(_options.FallbackCultureName) && request.CultureName != _options.FallbackCultureName)
