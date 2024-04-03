@@ -1,5 +1,6 @@
 ﻿using Ekzakt.EmailTemplateProvider.Core.Models;
 using Ekzakt.EmailTemplateProvider.Core.Requests;
+using Ekzakt.Utilities.Helpers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
@@ -17,6 +18,7 @@ public sealed class EmailTemplateCache(
         if (_memoryCache.TryGetValue(request.CacheKeyName, out EmailTemplateInfo? template))
         {
             _logger.LogDebug("A value of {CacheKeyName} was found in cache and is being returned.", request.CacheKeyName);
+
             return (true, template);
         }
 
