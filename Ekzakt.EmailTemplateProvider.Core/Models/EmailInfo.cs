@@ -2,18 +2,9 @@
 
 namespace Ekzakt.EmailTemplateProvider.Core.Models;
 
-public class EmailInfo : ICloneable
+public class EmailInfo
 {
     public string RecipientType { get; set; } = string.Empty;
 
     public Email? Email { get; set; }
-
-    public object Clone()
-    {
-        EmailInfo cloned = (EmailInfo)MemberwiseClone();
-        cloned.RecipientType = RecipientType;
-        cloned.Email = Email;
-
-        return cloned;
-    }
 }
