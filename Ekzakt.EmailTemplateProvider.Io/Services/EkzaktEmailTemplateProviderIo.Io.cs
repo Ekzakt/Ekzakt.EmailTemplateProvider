@@ -41,12 +41,12 @@ public class EkzaktEmailTemplateProviderIo : IEkzaktEmailTemplateProvider
             if (templateInfo is not null && templateInfo.IsValid)
             {
                 // We need to create a deep copy of the template because
-                // the EmailTemplateInfo returned from the cache
-                // seems to be a reference type.
+                // the EmailTemplateInfo returned from cache
+                // is a reference type.
 
                 EmailTemplateInfo clonedTemplateInfo = templateInfo.DeepCopy();
 
-                return new EmailTemplateResponse(templateInfo);
+                return new EmailTemplateResponse(clonedTemplateInfo);
             }
 
             if (!string.IsNullOrEmpty(_options.FallbackCultureName) && request.CultureName != _options.FallbackCultureName)
