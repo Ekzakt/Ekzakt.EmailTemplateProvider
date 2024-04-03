@@ -46,7 +46,7 @@ public class EkzaktEmailTemplateProviderIo : IEkzaktEmailTemplateProvider
 
                 EmailTemplateInfo clonedTemplateInfo = templateInfo.DeepCopy();
 
-                return new EmailTemplateResponse(templateInfo);
+                return new EmailTemplateResponse(clonedTemplateInfo);
             }
 
             if (!string.IsNullOrEmpty(_options.FallbackCultureName) && request.CultureName != _options.FallbackCultureName)
