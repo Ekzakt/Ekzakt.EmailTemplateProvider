@@ -21,9 +21,9 @@ public sealed class EmailTemplateCache(
         }
 
         _logger.LogDebug("No value of {CacheKeyName} was found in cache.", request.CacheKeyName);
-        template = await onCacheKeyNotFound(request);
+        var output = await onCacheKeyNotFound(request);
 
-        SetTemplate(request.CacheKeyName, template);
+        SetTemplate(request.CacheKeyName, output);
 
         return (true, template);
     }
