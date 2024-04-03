@@ -25,7 +25,7 @@ public sealed class EmailTemplateCache(
 
         SetTemplate(request.CacheKeyName, output);
 
-        return (true, template);
+        return (true, output);
     }
 
 
